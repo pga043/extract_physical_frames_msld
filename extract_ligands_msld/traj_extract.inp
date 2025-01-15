@@ -1,0 +1,98 @@
+* Writing new dcd from production runs with lambda values > 0.9 for a substituent
+* Parveen Gartan (13 February 2023)
+*
+
+set sysname = bayer
+
+bomlev -1
+stream toppar.str
+
+read psf card name minimized.psf
+read coor card name minimized.crd
+coor copy comp
+
+bomlev 0
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!! loop to read the dcd file and corresponding dominant frame file
+set j = 1
+label file_loop 
+
+stream ../@dir/tmp/block_@res_frames@j.dat
+
+!!----------------------------------
+!! skip reading trajectories that do not have dominant frames
+if @end@@j .eq. 0 then
+incr j by 1
+if j le @ndcds goto file_loop
+else
+!!---------------------------------
+
+open unit 41 read unform name ../@dir/dcd/@sysname_prod@j.dcd_0
+traj query unit 41
+
+open write unit 31 file name visual@j_@res.dcd
+
+traj firstu 41 nunit 1 skip 1 begin 0 iwrite 31 nwrite 1 nfile @end@@j 
+
+!!!!!!!!!!!!!!!!!
+!! loop to read and write specific frames from the trajectory 
+set k  1
+set fr 1
+label frame_loop
+
+if fr .eq. @f@@k then
+traj read
+!write coor card name test_@fr.crd
+traj write
+else 
+traj read
+incr fr by 1
+if fr le 50 goto frame_loop ! all dcds have 50 frames only
+endif
+
+incr fr by 1
+incr k by 1
+if k le @end@@j goto frame_loop
+!!!!!!!!!!!!!!!!!
+
+endif
+incr j by 1
+if j le @ndcds goto file_loop
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!!==============================================================
+! merge all the new dcd files and then delete the individual files
+
+open write unit 51 file name merged_@dir_block_@res.dcd
+
+set skip = 0
+set p 1
+label traj_loop
+calc un = 60 + @p - @skip
+
+!! check whether the dcd file exists are not (the number might have been skipped)
+bomlev -1
+open read unit @un file name visual@p_@res.dcd
+if ?IOSTAT .eq. 1 then
+bomlev 0
+else
+calc skip = @skip + 1
+!calc pp = @p + 1
+!open read unit @un file name visual@pp_@res.dcd
+incr p by 1
+if p le @ndcds goto traj_loop
+endif
+
+incr p by 1
+if p le @ndcds goto traj_loop
+
+echo @skip
+
+calc new = @ndcds - @skip
+
+merge firstu 61 nunit @new output 51 nocheck sele all end
+
+!system "rm visual*.dcd"
+
+stop

@@ -1,0 +1,17 @@
+* Toppar files AMBER + GAFF2
+*
+
+read rtf card name toppar/parm14sb_all.rtf
+read param card flex name toppar/parm14sb_all.prm
+
+read rtf append card name core.rtf
+read param flex append card name full_ligand.prm 
+read rtf append card name site1_sub1_pres.rtf
+read rtf append card name site1_sub2_pres.rtf
+read rtf append card name site1_sub3_pres.rtf
+read rtf append card name site1_sub4_pres.rtf
+read rtf append card name site1_sub5_pres.rtf
+read rtf append card name site1_sub6_pres.rtf
+read rtf append card name site1_sub7_pres.rtf
+read rtf append card name site1_sub9_pres.rtf
+

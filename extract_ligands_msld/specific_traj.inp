@@ -1,0 +1,21 @@
+* deleting extra substituents from dcd
+*
+
+!===================================================================
+bomlev -1
+stream toppar.str
+!=================================================================
+
+read psf card name minimized.psf
+read coor card name minimized.crd
+coor copy comp
+bomlev 0
+
+stream ligands/lig@res.str
+
+!===================== IMAGE ==================================================
+open read unit 101 file name merged_block_@res-oriented.dcd
+
+
+stop
+

@@ -1,0 +1,55 @@
+* ATOM NAMES for a particular ligand
+* CORE + SUB
+*
+
+define lig4 -
+  select ( -
+  atom LIG 1 C001 .or. -
+  atom LIG 1 N002 .or. -
+  atom LIG 1 C003 .or. -
+  atom LIG 1 H004 .or. -
+  atom LIG 1 C005 .or. -
+  atom LIG 1 C006 .or. -
+  atom LIG 1 C007 .or. -
+  atom LIG 1 N008 .or. -
+  atom LIG 1 N009 .or. -
+  atom LIG 1 N010 .or. -
+  atom LIG 1 C011 .or. -
+  atom LIG 1 C012 .or. -
+  atom LIG 1 C013 .or. -
+  atom LIG 1 C014 .or. -
+  atom LIG 1 H015 .or. -
+  atom LIG 1 H016 .or. -
+  atom LIG 1 H017 .or. -
+  atom LIG 1 C018 .or. -
+  atom LIG 1 C019 .or. -
+  atom LIG 1 C020 .or. -
+  atom LIG 1 N021 .or. -
+  atom LIG 1 N022 .or. -
+  atom LIG 1 C023 .or. -
+  atom LIG 1 H024 .or. -
+  atom LIG 1 C025 .or. -
+  atom LIG 1 H026 .or. -
+  atom LIG 1 C027 .or. -
+  atom LIG 1 H028 .or. -
+  atom LIG 1 C029 .or. -
+  atom LIG 1 H030 .or. -
+  atom LIG 1 C031 .or. -
+  atom LIG 1 H032 .or. -
+  atom LIG 1 F033 .or. -
+  atom LIG 1 F034 .or. -
+  atom LIG 1 F035 .or. -
+  atom LIG 1 C036 .or. -
+  atom LIG 1 H037 .or. -
+  atom LIG 1 C038 .or. -
+  atom LIG 1 H039 .or. -
+  atom LIG 1 C040 .or. -
+  atom LIG 1 H041 .or. -
+  atom LIG 1 C054 .or. -
+  atom LIG 1 N055 .or. -
+  atom LIG 1 H056 .or. -
+  atom LIG 1 C057 .or. -
+  atom LIG 1 H058 .or. -
+  atom LIG 1 H059 .or. -
+  atom LIG 1 H060 .or. -
+  none ) end
