@@ -1,0 +1,67 @@
+* orient the trajectories
+*
+
+!===================================================================
+bomlev -2
+stream toppar.str
+
+read psf card name minimized.psf
+read coor card name minimized.crd
+coor copy comp
+bomlev 0
+!===================== IMAGE ==================================================
+! set up crystal and images
+set boxsize = @box
+crystal define cubic @boxsize @boxsize @boxsize 90. 90. 90.
+crystal build noper 0
+
+! These segments are used for water and ions in bulk solvent
+define bulks sele segid bwat .or. segid pot .or. segid cl .or. segid sod .or. -
+  segid cal .or. segid mg .or. segid ces end 
+
+! You may need to change these depending on how you plan to do recentering
+image byseg sele .not. resname tip3 .and. .not. bulks end
+image byres sele resname tip3 .or. bulks end
+!===================================================================================
+
+set p1 = a
+set p2 = b
+set p3 = c
+set p4 = d
+set p5 = e
+
+!!----------------------------------------------------------------------------
+
+open write unit 101 file name merged_block_@res-oriented.dcd
+
+set skip = 0
+set j 1
+label read_loop
+calc un = 40 + @j - @skip
+
+!! check whether the dcd file exists are not (the number might have been skipped)
+bomlev -1
+open read unit @un file name merged_@{run}@p@@j_block_@res.dcd
+if ?IOSTAT .eq. 1 then
+bomlev 0
+else
+calc skip = @skip + 1
+incr j by 1
+if j le @ndcds goto read_loop
+endif
+
+incr j by 1
+if j le @ndcds goto read_loop
+
+echo @skip
+
+calc new = @ndcds - @skip
+
+!"Merge" to create a new trajectory with rprotein only. The protein will
+!  be re-oriented to have minimum CA rms wrt reference in comparison set
+merge firstu 41 nunit @new output 101 nocheck sele all end - !first selection to write atoms to new traj
+      recenter orient sele .not. (resname tip3 .or. bulks) end ! this selection for root mean square fitting
+
+
+stop
+

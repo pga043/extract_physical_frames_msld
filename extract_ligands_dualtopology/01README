@@ -1,0 +1,21 @@
+#!/bin/bash
+
+export prod=78
+export time=30
+export nblocks=`cat ../nblocks`
+
+nblocks=$nblocks
+for((n=1;n<=nblocks;n++))
+do
+
+export box=`grep -i box ../prep/lmnmt.inp | sed -n '1p' | awk '{print $4}'`
+export replica=5
+
+/net/orinoco/pga043/CHARMM_47a2/charmm_47a2/build_openmm_blade/charmm run=run"$prod" res=$n ndcds=$replica box=$box -i orient_all.inp > log_block_"$n"
+
+export termination=`grep -i normal log_block_$n`
+echo "orienting termination: " $termination
+
+#rm merged_run*_"$res".dcd"
+
+done

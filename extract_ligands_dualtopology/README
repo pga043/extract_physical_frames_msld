@@ -1,0 +1,38 @@
+#!/bin/bash
+
+
+## copy some files
+# cp ../prep/minimized.* .
+# cp -r ../prep/toppar* .
+# cp ../prep/*.str .
+
+export prod=78
+export time=30
+export nblocks=`cat ../nblocks`
+
+## extract lambda values cooresponding to coordinate saving frequency
+## this file assumes 5 replicas of '$time' ns each 
+./lambdas.sh
+
+echo $nblocks
+
+for dir in run"$prod"a run"$prod"b run"$prod"c run"$prod"d run"$prod"e
+do
+nblocks=$nblocks
+for((n=1;n<=nblocks;n++))
+do
+
+export dcds=`grep -i end ../"$dir"/tmp/block_"$n"_frames* | awk '$4> 0' | wc -l`
+
+echo "Number of dcds read for block"$n "from" $dir "=" $dcds "out of" "$time" "dcds"
+
+/net/orinoco/pga043/CHARMM_47a2/charmm_47a2/build_openmm_blade/charmm dir=$dir res=$n ndcds=$time -i traj_extract.inp > output_"$dir"_block_"$n"
+
+export termination=`grep -i normal output_"$dir"_block_"$n"`
+echo "merging termination: " $termination
+
+done
+done
+
+#----------------------------------------------------------------------------##
+
