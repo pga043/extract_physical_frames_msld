@@ -1,4 +1,4 @@
-# extract_physical_frames_MS(03bb)D
+# extract_physical_frames_MS&03bb;D
 1. Make a new directory within your main direcotry containing all the different run directories.
 2. The README file has three portions \
    i). lambdas.sh => this script will try to extract lambda values from output_*_0 file corresponding to the saving frequecny of \
