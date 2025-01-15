@@ -1,0 +1,49 @@
+#!/bin/bash
+
+
+## copy some files
+# cp ../prep/minimized.* .
+# cp -r ../prep/toppar* .
+# cp ../prep/*.str .
+
+export prod=81
+export time=5
+
+## extract lambda values cooresponding to coordinate saving frequency
+## this file assumes 5 replicas of '$time' ns each 
+#./lambdas.sh
+
+#for dir in run"$prod"a run"$prod"b run"$prod"c run"$prod"d run"$prod"e
+#do
+#for res in wt mut
+#do
+
+#export dcds=`grep -i end ../"$dir"/tmp/"$res"_frames* | awk '$4> 0' | wc -l`
+
+#echo "Number of dcds read for" $res "from" $dir "=" $dcds
+
+#/net/orinoco/pga043/CHARMM_47a2/charmm_47a2/build_openmm_blade/charmm dir=$dir res=$res ndcds=$time -i traj_extract.inp > output_"$dir"_"$res"
+
+#export termination=`grep -i normal output_"$dir"_"$res"`
+#echo "merging termination: " $termination
+
+#done
+#done
+
+#----------------------------------------------------------------------------##
+
+for res in wt mut
+do
+
+#export box=`grep -i box ../prep/stard11.inp | sed -n '1p' | awk '{print $4}'`
+
+#/net/orinoco/pga043/CHARMM_47a2/charmm_47a2/build_openmm_blade/charmm run=run"$prod" res=$res ndcds=$time box=$box -i orient.inp > log_"$res"
+
+#export termination=`grep -i normal log_$res`
+#echo "orienting termination: " $termination
+
+#rm merged_run*_"$res".dcd"
+
+/net/orinoco/pga043/CHARMM_47a2/charmm_47a2/build_openmm_blade/charmm  res=$res -i hbonds.inp > hbonds_"$res".out
+
+done
